@@ -1,0 +1,25 @@
+{
+  "name": "polisi-unsent-bot-typescript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "tslint -c tslint.json src/**/*.ts",
+    "start": "ts-node ./src/index.ts",
+    "dev": "nodemon ./src/index.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.5.0",
+    "tslint": "^6.1.3",
+    "typescript": "^4.5.5"
+  },
+  "files": [
+    "./bin/*",
+    "./lib/*"
+  ],
+  "typings": "./lib/index.d.ts"
+}
