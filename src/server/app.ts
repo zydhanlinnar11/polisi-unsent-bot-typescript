@@ -1,7 +1,8 @@
+import { Client } from 'discord.js'
 import express from 'express'
 import Routes from './routes'
 
-export default function setupServer() {
+export default function setupServer(_client: Client | null) {
   try {
     const app = express()
 
