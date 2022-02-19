@@ -28,7 +28,13 @@
     "declaration": true,
 
     "pretty": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/pages/*": ["src/server/pages/*"],
+      "@/server/*": ["src/server/*"],
+      "@/types/*": ["src/server/types/*"]
+    }
   },
   "include": ["typings/**/*", "src/**/*"]
 }
