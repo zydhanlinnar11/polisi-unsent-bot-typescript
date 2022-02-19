@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  polisi-unsent-bot:
+    container_name: polisi-unsent-bot
+    build: ./
+    working_dir: /home/node/app
+    expose: [8000]
+    env_file: [docker.env]
+    mem_limit: 100M
+    command: /bin/sh -c "npm install && npm start"
+    networks: [nginx-proxy-network]
+    restart: always
+
+networks:
+  nginx-proxy-network:
+    external: true
