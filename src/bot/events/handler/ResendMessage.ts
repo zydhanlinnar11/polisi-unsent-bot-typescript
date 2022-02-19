@@ -1,4 +1,4 @@
-import { Message, PartialMessage } from 'discord.js'
+import { Message, PartialMessage, User } from 'discord.js'
 
 export default function resendMessage(
   message: Message<boolean> | PartialMessage,
@@ -6,17 +6,37 @@ export default function resendMessage(
 ) {
   if (!message.content) return
 
-  const createdAtLocaleString = message.createdAt.toLocaleString(
+  const prefix = eventType === 'delete' ? 'Before unsent' : 'Before edited'
+
+  const hasEmbed = message.embeds.length > 0
+  if (hasEmbed) {
+    const isEmbedURLSameAsMessageContent =
+      message.embeds[0].url === message.content
+    if (isEmbedURLSameAsMessageContent) {
+      message.channel.send(`${prefix} :`)
+      message.channel.send(message.content)
+      message.channel.send(
+        `By : ${getSenderAndTimestamp(message.author, message.createdAt)}`
+      )
+      return
+    }
+  }
+
+  message.channel.send(
+    `${prefix} : " ${message.content} "-${getSenderAndTimestamp(
+      message.author,
+      message.createdAt
+    )}`
+  )
+}
+
+function getSenderAndTimestamp(author: User | null, createdAt: Date) {
+  const createdAtLocaleString = createdAt.toLocaleString(
     process.env.BOT_LOCALE ?? 'id-ID',
     {
       timeZone: process.env.BOT_TIMEZONE ?? 'Asia/Jakarta',
       timeZoneName: 'short',
     }
   )
-  const prefix = eventType === 'delete' ? 'Before unsent' : 'Before edited'
-  message.channel.send(
-    `${prefix} : " ${message.content} "-${
-      message.author ? `<@${message.author.id}>` : 'Someone'
-    } ${createdAtLocaleString}`
-  )
+  return `${author ? `<@${author.id}>` : 'Someone'} at ${createdAtLocaleString}`
 }
