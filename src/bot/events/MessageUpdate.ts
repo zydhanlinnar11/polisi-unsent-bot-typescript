@@ -1,3 +1,8 @@
 import { Client } from 'discord.js'
+import resendMessage from './handler/ResendMessage'
 
-export default function setupOnMessageUpdateEvent(_client: Client) {}
+const EVENT = 'messageUpdate'
+
+export default function setupOnMessageUpdateEvent(_client: Client) {
+  _client.on(EVENT, (message) => resendMessage(message, 'update'))
+}
