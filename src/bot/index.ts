@@ -1,6 +1,7 @@
 // import discord from 'discord.js'
 
 import { Client, Intents } from 'discord.js'
+import setupEventProvider from './events/EventProvider'
 
 export default async function setupBot() {
   const client = new Client({
@@ -19,6 +20,8 @@ export default async function setupBot() {
     console.log(
       `Successfully logged in as ${user.username}#${user.discriminator}`
     )
+
+    setupEventProvider(client)
     return client
   } catch (e) {
     return null
