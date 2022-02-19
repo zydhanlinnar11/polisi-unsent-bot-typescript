@@ -4,5 +4,7 @@ import resendMessage from './handler/ResendMessage'
 const EVENT = 'messageUpdate'
 
 export default function setupOnMessageUpdateEvent(_client: Client) {
-  _client.on(EVENT, (message) => resendMessage(message, 'update'))
+  _client.on(EVENT, (oldMessage, newMessage) =>
+    resendMessage(oldMessage, 'update', newMessage)
+  )
 }

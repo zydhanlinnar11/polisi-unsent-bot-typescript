@@ -1,31 +1,33 @@
 import { Message, PartialMessage, User } from 'discord.js'
 
 export default function resendMessage(
-  message: Message<boolean> | PartialMessage,
-  eventType: 'delete' | 'update'
+  oldMessage: Message<boolean> | PartialMessage,
+  eventType: 'delete' | 'update',
+  newMessage?: Message<boolean> | PartialMessage
 ) {
-  if (!message.content) return
+  if (oldMessage.content === newMessage?.content) return
+  if (!oldMessage.content) return
 
   const prefix = eventType === 'delete' ? 'Before unsent' : 'Before edited'
 
-  const hasEmbed = message.embeds.length > 0
+  const hasEmbed = oldMessage.embeds.length > 0
   if (hasEmbed) {
     const isEmbedURLSameAsMessageContent =
-      message.embeds[0].url === message.content
+      oldMessage.embeds[0].url === oldMessage.content
     if (isEmbedURLSameAsMessageContent) {
-      message.channel.send(`${prefix} :`)
-      message.channel.send(message.content)
-      message.channel.send(
-        `By : ${getSenderAndTimestamp(message.author, message.createdAt)}`
+      oldMessage.channel.send(`${prefix} :`)
+      oldMessage.channel.send(oldMessage.content)
+      oldMessage.channel.send(
+        `By : ${getSenderAndTimestamp(oldMessage.author, oldMessage.createdAt)}`
       )
       return
     }
   }
 
-  message.channel.send(
-    `${prefix} : " ${message.content} "-${getSenderAndTimestamp(
-      message.author,
-      message.createdAt
+  oldMessage.channel.send(
+    `${prefix} : " ${oldMessage.content} "-${getSenderAndTimestamp(
+      oldMessage.author,
+      oldMessage.createdAt
     )}`
   )
 }
